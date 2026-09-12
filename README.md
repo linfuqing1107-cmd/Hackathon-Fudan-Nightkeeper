@@ -13,6 +13,8 @@
 
 ## 阅读顺序
 
+整体介绍先读：[Nightkeeper 整体技术路线说明](docs/10-technical-roadmap.md)，包含当前实现、目标架构、大模型边界与分期规划。
+
 1. [产品需求 PRD](docs/01-prd.md)：目标、角色、范围、页面和交付标准。
 2. [行为规格 Spec](docs/02-spec.md)：编号需求、状态机、规则及验收。
 3. [数据契约](docs/03-data-contract.md)：实体、字段、质量与时间口径。
