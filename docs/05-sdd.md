@@ -2,6 +2,8 @@
 
 版本v0.1，设计草案。实现行为以Spec为准，字段以数据契约为准。技术版本在T01锁定并记录lockfile，不在此虚构已经验证的库兼容性。
 
+实现注记：v0.2本地演示采用PGlite聚合存储及同步规则，这是本轮明确的增量范围。见[ADR-08/09与未完成项](09-implementation-status.md)。下文PostgreSQL服务和worker仍为目标架构，不是已运行组件。
+
 ## 1. 架构决策
 
 首版采用TypeScript模块化单体：Next.js网页和同源Route Handlers，PostgreSQL存储，schema库作运行时校验，SQL迁移管理结构，独立Node worker处理DB队列。选择单体降低接口和部署成本，保留设备、规则、摘要的模块边界。

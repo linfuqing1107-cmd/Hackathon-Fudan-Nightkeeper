@@ -1,5 +1,7 @@
 # API 契约 v0.1
 
+这是目标契约。当前v0.2实际可用接口和请求schema见运行时 `/api/v1/openapi`，差异见[实现状态](09-implementation-status.md)。不要依据本页假定所有路由已经实现。
+
 前缀 /api/v1。REST JSON，同源浏览器会话；所有路由由服务端解析workspaceId及身份，拒绝客户端自授范围。下表是首版接口清单，开发任务T01须补机器可验证OpenAPI并执行契约测试。
 
 ## 1. 公共约定
