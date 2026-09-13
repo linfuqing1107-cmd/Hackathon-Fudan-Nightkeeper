@@ -4,6 +4,7 @@ const net = require('node:net');
 const path = require('node:path');
 const fs = require('node:fs');
 let server, watch, mainWindow, watchWindow, origin, quitting = false;
+function fatal(title,message){console.error(title,message);if(process.env.NIGHTKEEPER_SMOKE!=='true')dialog.showErrorBox(title,message);app.quit();}
 if (!app.requestSingleInstanceLock()) app.quit();
 app.on('second-instance', () => { mainWindow?.show(); mainWindow?.focus(); });
 function port() { return new Promise((resolve,reject)=>{ const s=net.createServer();s.on('error',reject);s.listen(0,'127.0.0.1',()=>{const p=s.address().port;s.close(()=>resolve(p));}); }); }
@@ -49,8 +50,9 @@ app.whenReady().then(async()=>{
     cwd:path.join(process.resourcesPath,'server'),
     env:{...process.env,PORT:String(p),HOSTNAME:'127.0.0.1',NIGHTKEEPER_DEMO:'true',DEMO_MODE:'true',DATA_DIR:data},stdio:'pipe'
   });
-  server.stdout?.on('data',()=>{});server.stderr?.on('data',()=>{});
-  server.on('exit',()=>{if(!quitting){dialog.showErrorBox('本地服务已退出','请关闭并重新启动 Nightkeeper。');app.quit();}});
+  server.stdout?.on('data',data=>{if(process.env.NIGHTKEEPER_SMOKE==='true')console.log(data.toString());});
+  server.stderr?.on('data',data=>{if(process.env.NIGHTKEEPER_SMOKE==='true')console.error(data.toString());});
+  server.on('exit',()=>{if(!quitting)fatal('本地服务已退出','请关闭并重新启动 Nightkeeper。');});
   await ready(origin+'/api/v1/health');
   mainWindow=windowFor(origin);
   mainWindow.on('closed',()=>app.quit());
@@ -59,6 +61,6 @@ app.whenReady().then(async()=>{
     {label:'手表接入',submenu:[{label:'合成回放',click:()=>startWatch('replay')},{label:'真实 BLE 采集',click:()=>startWatch('ble')},{label:'停止手表会话',click:stopWatch}]},
     {label:'视图',submenu:[{role:'reload',label:'刷新'},{role:'resetZoom',label:'重置缩放'},{role:'zoomIn',label:'放大'},{role:'zoomOut',label:'缩小'}]}
   ]));
-}).catch(error=>{dialog.showErrorBox('启动失败',error.message);app.quit();});
+}).catch(error=>fatal('启动失败',error.stack||error.message));
 app.on('window-all-closed',()=>app.quit());
 app.on('before-quit',()=>{quitting=true;stopWatch();server?.kill();});
