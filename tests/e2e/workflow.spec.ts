@@ -66,7 +66,7 @@ test("mobile layout and consent", async ({ page }) => {
   });
 });
 test("API guards, replay, isolation and recovery", async ({ request }) => {
-  const origin = "http://127.0.0.1:3100";
+  const origin = process.env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1:3100";
   const response = await request.post("/api/v1/demo/session", {
     headers: { Origin: origin },
     data: { identityCode: "S01" },
@@ -116,7 +116,7 @@ test("API guards, replay, isolation and recovery", async ({ request }) => {
 test("concurrent claim and reset remain workspace-safe", async ({
   playwright,
 }) => {
-  const origin = "http://127.0.0.1:3100";
+  const origin = process.env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1:3100";
   const first = await playwright.request.newContext({ baseURL: origin });
   const second = await playwright.request.newContext({ baseURL: origin });
   try {

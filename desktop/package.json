@@ -1,0 +1,21 @@
+{
+  "name": "nightkeeper-desktop",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Nightkeeper local competition demo",
+  "author": "Nightkeeper Team",
+  "main": "main.cjs",
+  "scripts": { "pack": "electron-builder --win nsis portable --x64 --publish never" },
+  "devDependencies": { "electron": "44.3.0", "electron-builder": "26.15.3" },
+  "build": {
+    "appId": "org.nightkeeper.demo",
+    "productName": "Nightkeeper",
+    "directories": { "output": "release" },
+    "files": ["main.cjs", "package.json"],
+    "extraResources": [{ "from": "resources/server", "to": "server" }, { "from": "resources/watch", "to": "watch" }],
+    "npmRebuild": false,
+    "win": { "target": ["nsis", "portable"], "signAndEditExecutable": false },
+    "nsis": { "oneClick": false, "perMachine": false, "allowToChangeInstallationDirectory": true, "artifactName": "Nightkeeper-${version}-Windows-x64-Setup.exe" },
+    "portable": { "artifactName": "Nightkeeper-${version}-Windows-x64-Portable.exe" }
+  }
+}

@@ -1,5 +1,11 @@
 node_modules/
 .next/
+.next-demo/
+.next-desktop/
+desktop/resources/
+desktop/release/
+integrations/watch/build/
+integrations/watch/*.spec
 dist/
 coverage/
 playwright-report/

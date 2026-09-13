@@ -29,6 +29,7 @@ import * as schemas from "@/lib/contracts";
 import type { Patient, Session, State, Task } from "@/lib/types";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+const sessionCookieName = process.env.NIGHTKEEPER_DEMO === "true" ? "nk_demo_session" : "nk_session";
 function patientAccess(state: State, session: Session, id: string): Patient {
   check(canRead(session.identity, id), 404, "未找到资源");
   const p = state.patients.find((p) => p.id === id);
@@ -66,7 +67,7 @@ async function handler(
       return ok({ liveness: true, readiness: true, mode: "LOCAL_SYNTHETIC" });
     }
     if (route === "openapi" && req.method === "GET")
-      return NextResponse.json(openapi());
+      return NextResponse.json(openapi(sessionCookieName));
     const write = req.method !== "GET";
     if (write) {
       const origin = req.headers.get("origin");
@@ -76,7 +77,7 @@ async function handler(
         "来源校验失败",
       );
     }
-    const token = req.cookies.get("nk_session")?.value;
+    const token = req.cookies.get(sessionCookieName)?.value;
     let session = await getSession(token);
     const limitKey = token || "anonymous";
     for (const [key, value] of limits)
@@ -124,7 +125,7 @@ async function handler(
         role: roleOf(session.identity),
         csrf: session.csrf,
       });
-      res.cookies.set("nk_session", session.token, {
+      res.cookies.set(sessionCookieName, session.token, {
         httpOnly: true,
         sameSite: "strict",
         path: "/",

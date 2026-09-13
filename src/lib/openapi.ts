@@ -82,7 +82,7 @@ const definitions: [string, string, z.ZodType | null, string][] = [
   ],
   ["/health", "get", null, "Local service readiness"],
 ];
-export function openapi() {
+export function openapi(cookieName = "nk_session") {
   const paths: Record<string, Record<string, unknown>> = {};
   for (const [path, method, schema, summary] of definitions) {
     const parameters: unknown[] = [...path.matchAll(/\{(\w+)\}/g)].map((m) => ({
@@ -155,7 +155,7 @@ export function openapi() {
     paths,
     components: {
       securitySchemes: {
-        sessionCookie: { type: "apiKey", in: "cookie", name: "nk_session" },
+        sessionCookie: { type: "apiKey", in: "cookie", name: cookieName },
       },
       schemas: {
         Envelope: {
