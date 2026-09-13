@@ -22,4 +22,6 @@
 
 自动冒烟目前只覆盖 unpacked EXE 启动与回放，不替代物理手表、安装器和干净 Windows 机器验收。未完成 Windows workflow 时不能声称 EXE 已交付。
 
-本次 Mac 本地验证：独立 standalone 构建成功；18 项应用单元测试、10 项手表测试、对独立发布目录运行的 4 项端到端测试通过。Windows 打包及 EXE 冒烟尚待 Windows runner 执行。
+本次 Mac 本地验证：独立 standalone 构建成功；18 项应用单元测试、10 项手表测试、对独立发布目录运行的 4 项端到端测试通过。
+
+2026-09-13：Windows 构建 `windows-v0.2.0-build4` 成功，应用和手表单元测试、资源完整性检查、unpacked EXE 主窗口启动与内置手表回放均通过。[构建与成品下载](https://github.com/linfuqing1107-cmd/Hackathon-Fudan-Nightkeeper/actions/runs/34735418289)。同时生成 Setup/Portable EXE 及 SHA256 校验文件。CI 系统为 Windows Server 2025；Windows 10/11 干净机器、安装/卸载、真实手表仍需人工验收。
